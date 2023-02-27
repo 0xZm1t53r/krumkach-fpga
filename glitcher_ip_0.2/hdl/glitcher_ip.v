@@ -12,8 +12,8 @@ module glitcher_ip_v0_2 #
 
   // Do not modify the parameters beyond this line
   // Parameters of Axi Slave Bus Interface S_AXI
-  parameter integer C_S_AXI_DATA_WIDTH	= 32,
-  parameter integer C_S_AXI_ADDR_WIDTH	= 8
+  parameter integer C_S_AXI_DATA_WIDTH  = 32,
+  parameter integer C_S_AXI_ADDR_WIDTH  = 8
 )
 (
   // Users to add ports here
@@ -51,26 +51,26 @@ module glitcher_ip_v0_2 #
   input wire  s_axi_rready
 );
 
-	wire event_out;
-	wire target_nrst_out;
+  wire event_out;
+  wire target_nrst_out;
 
-	wire [C_S_AXI_DATA_WIDTH-1 : 0] delay_1st;
-	wire [C_S_AXI_DATA_WIDTH-1 : 0] delay_2nd;
-	wire [C_S_AXI_DATA_WIDTH-1 : 0] pulse_width;
-	wire [C_S_AXI_DATA_WIDTH-1 : 0] delay_1st_out;
-	wire [C_S_AXI_DATA_WIDTH-1 : 0] delay_2nd_out;
-	wire [C_S_AXI_DATA_WIDTH-1 : 0] pulse_width_out;
-	wire [C_S_AXI_DATA_WIDTH-1 : 0] target_rst_width;
-	wire [7:0] control;
-	wire control_wr;
-	wire target_rst_n;
-	wire [1023:0] buffer;
-	wire [6:0] buf_len;
-	wire [31:0] status;
-	wire [15:0] debug;
-	wire lock;
-	wire stop_n;
-	wire done;
+  wire [C_S_AXI_DATA_WIDTH-1 : 0] delay_1st;
+  wire [C_S_AXI_DATA_WIDTH-1 : 0] delay_2nd;
+  wire [C_S_AXI_DATA_WIDTH-1 : 0] pulse_width;
+  wire [C_S_AXI_DATA_WIDTH-1 : 0] delay_1st_out;
+  wire [C_S_AXI_DATA_WIDTH-1 : 0] delay_2nd_out;
+  wire [C_S_AXI_DATA_WIDTH-1 : 0] pulse_width_out;
+  wire [C_S_AXI_DATA_WIDTH-1 : 0] target_rst_width;
+  wire [7:0] control;
+  wire control_wr;
+  wire target_rst_n;
+  wire [1023:0] buffer;
+  wire [6:0] buf_len;
+  wire [31:0] status;
+  wire [15:0] debug;
+  wire lock;
+  wire stop_n;
+  wire done;
 
   wire delayer_1st_out;
   wire delayer_2nd_out;
@@ -93,7 +93,6 @@ module glitcher_ip_v0_2 #
   assign RUN_OUT = lock;
 
   assign target_nrst_trigger = control[5];
-  //assign trigger_input = (TRIGGER_IN & ~target_nrst_trigger) | (TARGET_NRST_OUT & target_nrst_trigger);
   assign trigger_input = target_nrst_trigger?TARGET_NRST_OUT:TRIGGER_IN;
 
   always @ (posedge s_axi_aclk)
@@ -116,53 +115,53 @@ module glitcher_ip_v0_2 #
   end
 
   // Instantiation of Axi Bus Interface S_AXI
-	glitcher_ip_S_AXI # ( 
-    .DELAY_1ST_DEFAULT(DELAY_1ST_DEFAULT),
-    .DELAY_2ND_DEFAULT(DELAY_2ND_DEFAULT),
-    .PULSE_WIDTH_DEFAULT(PULSE_WIDTH_DEFAULT),
-    .TARGET_NRST_WIDTH_DEFAULT(TARGET_NRST_WIDTH_DEFAULT),
-		.C_S_AXI_DATA_WIDTH(C_S_AXI_DATA_WIDTH),
-		.C_S_AXI_ADDR_WIDTH(C_S_AXI_ADDR_WIDTH)
-	) glitcher_ip_v0_1_S_AXI_inst (
-		.i_STATUS(status),
-		.i_DEBUG(debug),
-		.i_RX(RX),
-		.i_RX_READY(RX_READY),
-		.i_LOCK(lock),
-		.o_CONTROL(control),
-		.o_CONTROL_WR(control_wr),
-		.o_BUFFER(buffer),
-		.o_BUF_LEN(buf_len),
-		.o_DELAY_1ST(delay_1st),
-		.o_DELAY_2ND(delay_2nd),
-		.o_PULSE_WIDTH(pulse_width),
+  glitcher_ip_S_AXI # (
+  .DELAY_1ST_DEFAULT(DELAY_1ST_DEFAULT),
+  .DELAY_2ND_DEFAULT(DELAY_2ND_DEFAULT),
+  .PULSE_WIDTH_DEFAULT(PULSE_WIDTH_DEFAULT),
+  .TARGET_NRST_WIDTH_DEFAULT(TARGET_NRST_WIDTH_DEFAULT),
+      .C_S_AXI_DATA_WIDTH(C_S_AXI_DATA_WIDTH),
+      .C_S_AXI_ADDR_WIDTH(C_S_AXI_ADDR_WIDTH)
+  ) glitcher_ip_v0_1_S_AXI_inst (
+    .i_STATUS(status),
+    .i_DEBUG(debug),
+    .i_RX(RX),
+    .i_RX_READY(RX_READY),
+    .i_LOCK(lock),
+    .o_CONTROL(control),
+    .o_CONTROL_WR(control_wr),
+    .o_BUFFER(buffer),
+    .o_BUF_LEN(buf_len),
+    .o_DELAY_1ST(delay_1st),
+    .o_DELAY_2ND(delay_2nd),
+    .o_PULSE_WIDTH(pulse_width),
     .o_TARGET_RST_PULSE(target_rst_n),
     .o_TARGET_RST_WIDTH(target_rst_width),
 
-		.S_AXI_ACLK(s_axi_aclk),
-		.S_AXI_ARESETN(s_axi_aresetn),
-		.S_AXI_AWADDR(s_axi_awaddr),
-		.S_AXI_AWPROT(s_axi_awprot),
-		.S_AXI_AWVALID(s_axi_awvalid),
-		.S_AXI_AWREADY(s_axi_awready),
-		.S_AXI_WDATA(s_axi_wdata),
-		.S_AXI_WSTRB(s_axi_wstrb),
-		.S_AXI_WVALID(s_axi_wvalid),
-		.S_AXI_WREADY(s_axi_wready),
-		.S_AXI_BRESP(s_axi_bresp),
-		.S_AXI_BVALID(s_axi_bvalid),
-		.S_AXI_BREADY(s_axi_bready),
-		.S_AXI_ARADDR(s_axi_araddr),
-		.S_AXI_ARPROT(s_axi_arprot),
-		.S_AXI_ARVALID(s_axi_arvalid),
-		.S_AXI_ARREADY(s_axi_arready),
-		.S_AXI_RDATA(s_axi_rdata),
-		.S_AXI_RRESP(s_axi_rresp),
-		.S_AXI_RVALID(s_axi_rvalid),
-		.S_AXI_RREADY(s_axi_rready)
-	); 
+    .S_AXI_ACLK(s_axi_aclk),
+    .S_AXI_ARESETN(s_axi_aresetn),
+    .S_AXI_AWADDR(s_axi_awaddr),
+    .S_AXI_AWPROT(s_axi_awprot),
+    .S_AXI_AWVALID(s_axi_awvalid),
+    .S_AXI_AWREADY(s_axi_awready),
+    .S_AXI_WDATA(s_axi_wdata),
+    .S_AXI_WSTRB(s_axi_wstrb),
+    .S_AXI_WVALID(s_axi_wvalid),
+    .S_AXI_WREADY(s_axi_wready),
+    .S_AXI_BRESP(s_axi_bresp),
+    .S_AXI_BVALID(s_axi_bvalid),
+    .S_AXI_BREADY(s_axi_bready),
+    .S_AXI_ARADDR(s_axi_araddr),
+    .S_AXI_ARPROT(s_axi_arprot),
+    .S_AXI_ARVALID(s_axi_arvalid),
+    .S_AXI_ARREADY(s_axi_arready),
+    .S_AXI_RDATA(s_axi_rdata),
+    .S_AXI_RRESP(s_axi_rresp),
+    .S_AXI_RVALID(s_axi_rvalid),
+    .S_AXI_RREADY(s_axi_rready)
+  );
 
-	handler #(
+  handler #(
     .TRIGGER_MIN_CNT(TRIGGER_MIN_CNT)
   ) handler_inst (
     .i_CLK(s_axi_aclk),

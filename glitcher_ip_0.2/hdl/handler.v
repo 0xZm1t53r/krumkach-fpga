@@ -2,7 +2,7 @@
 
 module handler #(
     parameter integer TRIGGER_MIN_CNT = 16
-  ) 
+  )
   (
     input i_CLK,
     input i_RST_N,
@@ -37,7 +37,7 @@ module handler #(
   parameter s_SETUP        = 4'b010;
   parameter s_WAIT_TRIGGER = 4'b011;
   parameter s_PULSE        = 4'b100;
-  
+
   parameter e_SUCCESS               = 8'h00000;
   parameter e_ERR_DELAYS_ZERO       = 8'b00001;
   parameter e_ERR_BUF_LEN           = 8'b00010;
@@ -101,7 +101,7 @@ module handler #(
           if (control_wr_posedge && run)
             r_state <= s_SETUP;
         end
-            
+
         s_SETUP: begin
           r_stop_n <= 1'b1;
           r_control <= i_CONTROL;

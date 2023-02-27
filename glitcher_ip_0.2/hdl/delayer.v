@@ -25,9 +25,9 @@ module delayer #(
   reg [31:0] r_width;
 
   reg [31:0] r_cur_cnt;
-  
+
   reg [2:0] r_state = s_IDLE;
-  
+
   wire trig_posedge = i_TRIGGER & ~r_trig_sample;
   assign o_TRIGGER = r_trigger;
   assign o_RUN = r_run;
@@ -44,7 +44,7 @@ module delayer #(
       r_run <= 1'b0;
     end else begin
       r_trig_sample <= i_TRIGGER;
-      
+
       case (r_state)
         s_IDLE: begin
           if (trig_posedge) begin
@@ -76,7 +76,7 @@ module delayer #(
             r_cur_cnt <= r_cur_cnt + 1;
           end else begin
             r_cur_cnt <= 32'h1;
-            
+
             r_state <= s_PULSE;
             r_trigger <= 1'b1;
           end
@@ -99,5 +99,5 @@ module delayer #(
         end
       endcase
     end
-  end 
+  end
 endmodule
